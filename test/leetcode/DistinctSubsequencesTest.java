@@ -23,6 +23,6 @@ public class DistinctSubsequencesTest {
     public void testNumDistinctLarge() throws Exception {
         DistinctSubsequences distinctSubsequences = new DistinctSubsequences();
         int totalNumber = distinctSubsequences.numDistinct("aabdbaabeeadcbbdedacbbeecbabebaeeecaeabaedadcbdbcdaabebdadbbaeabdadeaabbabbecebbebcaddaacccebeaeedababedeacdeaaaeeaecbe", "bddabdcae");
-        System.out.print(totalNumber);
+        assertEquals(10582116, totalNumber);
     }
 }
