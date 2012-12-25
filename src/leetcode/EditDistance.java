@@ -9,9 +9,9 @@ import java.util.Map;
  * Time: 10:31 AM
  */
 public class EditDistance {
-
     private Map<String, Integer> cache;
 
+    //Still "time limit exceeded" even after using dynamic programming
     public int minDistance(String word1, String word2) {
         // Start typing your Java solution below
         // DO NOT write main() function
