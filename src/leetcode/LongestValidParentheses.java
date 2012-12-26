@@ -8,36 +8,45 @@ import java.util.Stack;
  * Time: 5:03 PM
  */
 public class LongestValidParentheses {
+
+    private Stack<Integer> stack;
+    private int longest;
+    private int current;
+
     public int longestValidParentheses(String s) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        return process(s);
+        stack = new Stack<Integer>();
+        longest = 0;
+        current = 0;
+        process(s);
+        return longest;
     }
 
-    private int process(String s) {
-        for (int from = 0; from < s.length(); ++from) {
-            for (int to = s.length(); to > from; --to) {
-                if (isValid(s.substring(from, to))) {
-                    return to - from;
-                }
-            }
-        }
-        return 0;
-    }
-
-    private boolean isValid(String s) {
-        Stack<String> stack = new Stack<String>();
+    private void process(String s) {
         for (int i = 0; i < s.length(); ++i) {
-            if (s.charAt(i) == '(') {
-                stack.push("(");
+            processChar(s.charAt(i));
+        }
+    }
+
+    private void processChar(char c) {
+        if (c == '(') {
+            stack.push(current + 2);
+            current = 0;
+        } else {
+            if (stack.isEmpty()) {
+                updateLongest();
+                current = 0;
             } else {
-                if (stack.isEmpty()) {
-                    return false;
-                } else {
-                    stack.pop();
-                }
+                current += stack.pop();
+                updateLongest();
             }
         }
-        return stack.isEmpty();
+    }
+
+    private void updateLongest() {
+        if (current > longest) {
+            longest = current;
+        }
     }
 }
