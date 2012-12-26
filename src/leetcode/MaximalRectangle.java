@@ -9,6 +9,7 @@ public class MaximalRectangle {
 
     private int maxArea;
 
+    //TODO
     public int maximalRectangle(char[][] matrix) {
         // Start typing your Java solution below
         // DO NOT write main() function
