@@ -5,7 +5,7 @@ package leetcode;
  * Date: 12/24/12
  * Time: 11:12 PM
  */
-public class Interval {
+public class Interval implements Comparable<Interval> {
     int start;
     int end;
 
@@ -32,5 +32,16 @@ public class Interval {
             return false;
         }
 
+    }
+
+    @Override
+    public int compareTo(Interval interval) {
+        if (this.start > interval.start) {
+            return 1;
+        } else if (this.start == interval.start) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }
