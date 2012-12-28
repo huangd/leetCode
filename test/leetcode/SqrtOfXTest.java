@@ -15,6 +15,12 @@ public class SqrtOfXTest {
         SqrtOfX sqrtOfX = new SqrtOfX();
         int x = 2;
         int sqrt = sqrtOfX.sqrt(x);
+
+        int maxInt = Integer.MAX_VALUE;
+        int minInt = Integer.MIN_VALUE;
+        double maxDouble = Double.MAX_VALUE;
+        double minDouble = Double.MIN_VALUE;
+        double maxIntDouble = (double) maxInt;
         assertEquals(1, sqrt);
     }
 }
