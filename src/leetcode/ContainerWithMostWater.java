@@ -6,28 +6,22 @@ package leetcode;
  * Time: 4:09 PM
  */
 public class ContainerWithMostWater {
-    //This solution is too slow.
-    //TODO
+
     public int maxArea(int[] height) {
         // Start typing your Java solution below
         // DO NOT write main() function
         int max = Integer.MIN_VALUE;
-        for (int from = 0; from < height.length; ++from) {
-            int area = maxArea(height, from);
-            if (area > max) {
-                max = area;
+        for (int i = 0, j = height.length - 1; i < j; ) {
+            int minHeight = height[i] > height[j] ? height[j] : height[i];
+            int current = minHeight * (j - i);
+            if (current > max) {
+                max = current;
             }
-        }
-        return max;
-    }
 
-    private int maxArea(int[] height, int from) {
-        int max = Integer.MIN_VALUE;
-        for (int i = from; i < height.length; ++i) {
-            int minHeight = Math.min(height[from], height[i]);
-            int area = minHeight * (i - from);
-            if (area > max) {
-                max = area;
+            if (height[i] < height[j]) {
+                ++i;
+            } else {
+                --j;
             }
         }
         return max;
