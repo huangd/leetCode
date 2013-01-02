@@ -7,6 +7,7 @@ package leetcode;
  */
 public class UniqueBinarySearchTrees {
 
+    //Recursive is very good here. It used * instead of the regular +
     public int numTrees(int n) {
         // Start typing your Java solution below
         // DO NOT write main() function
