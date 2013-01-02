@@ -6,10 +6,17 @@ package leetcode;
  * Time: 11:05 AM
  */
 public class UniqueBinarySearchTrees {
-    //TODO: Need to have a solution
+
     public int numTrees(int n) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        return 0;
+        if (n == 0) {
+            return 1;
+        }
+        int sum = 0;
+        for (int i = 0; i < n; ++i) {
+            sum += numTrees(i) * numTrees(n - i - 1);
+        }
+        return sum;
     }
 }
