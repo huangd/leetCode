@@ -1,6 +1,9 @@
 package leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: huangd
@@ -9,88 +12,55 @@ import java.util.*;
  */
 public class CombinationSumII {
 
-    //TODO: DP is not working here. because the domain set is too huge.
-    private Map<String, ArrayList<ArrayList<Integer>>> cache;
+    private Set<ArrayList<Integer>> resultListSet;
+    private int target;
+    private int[] candidates;
 
     public ArrayList<ArrayList<Integer>> combinationSum2(int[] candidates, int target) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        cache = new HashMap<String, ArrayList<ArrayList<Integer>>>();
-        Arrays.sort(candidates);
-        return process(target, candidates);
+        resultListSet = new HashSet<ArrayList<Integer>>();
+        this.target = target;
+        this.candidates = candidates;
+
+        int sum = 0;
+        boolean inCandidates[] = new boolean[candidates.length];
+        backtrack(new ArrayList<Integer>(), sum, inCandidates);
+        ArrayList<ArrayList<Integer>> resultListList = new ArrayList<ArrayList<Integer>>();
+        for (ArrayList<Integer> result : resultListSet) {
+            resultListList.add(result);
+        }
+        return resultListList;
     }
 
-    private ArrayList<ArrayList<Integer>> process(int target, int[] candidates) {
-
-        String key = target + ":" + Arrays.toString(candidates);
-        ArrayList<ArrayList<Integer>> listListInteger = cache.get(key);
-        if (listListInteger != null) {
-            return listListInteger;
+    private void backtrack(ArrayList<Integer> integerArrayList, int sum, boolean[] inCandidates) {
+        if (isSolution(sum)) {
+            ArrayList<Integer> aResult = new ArrayList<Integer>(integerArrayList);
+            Collections.sort(aResult);
+            resultListSet.add(aResult);
         } else {
-            listListInteger = new ArrayList<ArrayList<Integer>>();
-        }
-
-        if (target < 0) {
-        } else if (target == 0) {
-            listListInteger.add(new ArrayList<Integer>());
-        } else {
-            for (int i = 0; i < candidates.length; ++i) {
-                int candidate = candidates[i];
-                ArrayList<ArrayList<Integer>> aListListInteger
-                        = process(target - candidate, removeCandidate(candidates, i));
-                aListListInteger = addOne(aListListInteger, candidate);
-                listListInteger.addAll(aListListInteger);
+            ArrayList<Integer> candidateListIndex = getCandidateListIndex(sum, inCandidates);
+            for (Integer index : candidateListIndex) {
+                integerArrayList.add(candidates[index]);
+                inCandidates[index] = true;
+                backtrack(integerArrayList, sum + candidates[index], inCandidates);
+                integerArrayList.remove(integerArrayList.size() - 1);
+                inCandidates[index] = false;
             }
         }
-        listListInteger = clean(listListInteger, target);
-        cache.put(key, listListInteger);
-        return listListInteger;
     }
 
-    private ArrayList<ArrayList<Integer>> clean(ArrayList<ArrayList<Integer>> listListInteger, int target) {
-        Set<ArrayList<Integer>> dedupSet = new HashSet<ArrayList<Integer>>();
-        ArrayList<ArrayList<Integer>> cleanListListInteger
-                = new ArrayList<ArrayList<Integer>>();
-
-        for (ArrayList<Integer> listInteger : listListInteger) {
-            int sum = 0;
-            for (Integer integer : listInteger) {
-                sum += integer;
-            }
-            if (sum == target) {
-                if (!dedupSet.contains(listInteger)) {
-                    cleanListListInteger.add(listInteger);
-                    dedupSet.add(listInteger);
-                }
-            }
-        }
-        return cleanListListInteger;
-    }
-
-    private ArrayList<ArrayList<Integer>> addOne(ArrayList<ArrayList<Integer>> listListInteger,
-                                                 int candidate) {
-        ArrayList<ArrayList<Integer>> newListListInteger = new ArrayList<ArrayList<Integer>>();
-        for (ArrayList<Integer> listInteger : listListInteger) {
-            int size = listInteger.size();
-            if (listInteger.size() == 0
-                    || listInteger.get(size - 1) <= candidate) {
-                ArrayList<Integer> newListInteger = new ArrayList<Integer>(listInteger);
-                newListInteger.add(candidate);
-                newListListInteger.add(newListInteger);
-            }
-        }
-        return newListListInteger;
-    }
-
-    private int[] removeCandidate(int[] candidates, int index) {
-        int[] newCandidates = new int[candidates.length - 1];
+    private ArrayList<Integer> getCandidateListIndex(int sum, boolean[] inCandidates) {
+        ArrayList<Integer> candidateListIndex = new ArrayList<Integer>();
         for (int i = 0; i < candidates.length; ++i) {
-            if (i < index) {
-                newCandidates[i] = candidates[i];
-            } else if (i > index) {
-                newCandidates[i - 1] = candidates[i];
+            if (sum + candidates[i] <= target && inCandidates[i] == false) {
+                candidateListIndex.add(i);
             }
         }
-        return newCandidates;
+        return candidateListIndex;
+    }
+
+    private boolean isSolution(int sum) {
+        return sum == target;
     }
 }

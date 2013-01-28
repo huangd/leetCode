@@ -33,12 +33,12 @@ public class CombinationSum {
     }
 
     private void backtrack(ArrayList<Integer> integerArrayList, int sum) {
-        if (isSolution(integerArrayList, sum)) {
+        if (isSolution(sum)) {
             ArrayList<Integer> aResult = new ArrayList<Integer>(integerArrayList);
             Collections.sort(aResult);
             resultListSet.add(aResult);
         } else {
-            ArrayList<Integer> candidateList = getCandidateList(integerArrayList, sum);
+            ArrayList<Integer> candidateList = getCandidateList(sum);
             for (Integer integer : candidateList) {
                 integerArrayList.add(integer);
                 backtrack(integerArrayList, sum + integer);
@@ -47,7 +47,7 @@ public class CombinationSum {
         }
     }
 
-    private ArrayList<Integer> getCandidateList(ArrayList<Integer> integerArrayList, int sum) {
+    private ArrayList<Integer> getCandidateList(int sum) {
         ArrayList<Integer> candidateList = new ArrayList<Integer>();
         for (int i = 0; i < candidates.length; ++i) {
             if (sum + candidates[i] <= target) {
@@ -57,7 +57,7 @@ public class CombinationSum {
         return candidateList;
     }
 
-    private boolean isSolution(ArrayList<Integer> integerArrayList, int sum) {
+    private boolean isSolution(int sum) {
         return sum == target;
     }
 }
