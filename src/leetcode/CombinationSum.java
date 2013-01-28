@@ -1,8 +1,9 @@
 package leetcode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: huangd
@@ -11,69 +12,52 @@ import java.util.Map;
  */
 public class CombinationSum {
 
+    private Set<ArrayList<Integer>> resultListSet;
+    private int target;
     private int[] candidates;
-    private Map<Integer, ArrayList<ArrayList<Integer>>> cache;
+
     public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
         // Start typing your Java solution below
         // DO NOT write main() function
+        resultListSet = new HashSet<ArrayList<Integer>>();
+        this.target = target;
         this.candidates = candidates;
-        cache = new HashMap<Integer, ArrayList<ArrayList<Integer>>>();
-        return process(target);
+
+        int sum = 0;
+        backtrack(new ArrayList<Integer>(), sum);
+        ArrayList<ArrayList<Integer>> resultListList = new ArrayList<ArrayList<Integer>>();
+        for (ArrayList<Integer> result : resultListSet) {
+            resultListList.add(result);
+        }
+        return resultListList;
     }
 
-    private ArrayList<ArrayList<Integer>> process(int target) {
-
-        ArrayList<ArrayList<Integer>> listListInteger = cache.get(target);
-        if(listListInteger != null){
-            return listListInteger;
-        }else{
-            listListInteger = new ArrayList<ArrayList<Integer>>();
-        }
-
-        if(target < 0){
-        } else if(target == 0){
-            listListInteger.add(new ArrayList<Integer>());
-        } else{
-            for(int candidate : candidates){
-                ArrayList<ArrayList<Integer>> aListListInteger
-                        = process(target-candidate);
-                aListListInteger = addOne(aListListInteger, candidate);
-                listListInteger.addAll(aListListInteger);
+    private void backtrack(ArrayList<Integer> integerArrayList, int sum) {
+        if (isSolution(integerArrayList, sum)) {
+            ArrayList<Integer> aResult = new ArrayList<Integer>(integerArrayList);
+            Collections.sort(aResult);
+            resultListSet.add(aResult);
+        } else {
+            ArrayList<Integer> candidateList = getCandidateList(integerArrayList, sum);
+            for (Integer integer : candidateList) {
+                integerArrayList.add(integer);
+                backtrack(integerArrayList, sum + integer);
+                integerArrayList.remove(integerArrayList.size() - 1);
             }
         }
-        listListInteger = clean(listListInteger, target);
-        cache.put(target, listListInteger);
-        return listListInteger;
     }
 
-    private ArrayList<ArrayList<Integer>> clean(ArrayList<ArrayList<Integer>> listListInteger, int target){
-        ArrayList<ArrayList<Integer>> cleanListListInteger
-                = new ArrayList<ArrayList<Integer>>();
-
-        for(ArrayList<Integer> listInteger : listListInteger){
-            int sum = 0;
-            for(Integer integer : listInteger){
-                sum += integer;
-            }
-            if(sum == target){
-                cleanListListInteger.add(listInteger);
+    private ArrayList<Integer> getCandidateList(ArrayList<Integer> integerArrayList, int sum) {
+        ArrayList<Integer> candidateList = new ArrayList<Integer>();
+        for (int i = 0; i < candidates.length; ++i) {
+            if (sum + candidates[i] <= target) {
+                candidateList.add(candidates[i]);
             }
         }
-        return cleanListListInteger;
+        return candidateList;
     }
 
-    private ArrayList<ArrayList<Integer>> addOne(ArrayList<ArrayList<Integer>> listListInteger,
-                                                 int candidate){
-        ArrayList<ArrayList<Integer>> newListListInteger = new ArrayList<ArrayList<Integer>>();
-        for(ArrayList<Integer> listInteger : listListInteger){
-            int size = listInteger.size();
-            if(listInteger.size() == 0
-                    || listInteger.get(size-1) <= candidate){
-                ArrayList<Integer> newListInteger = new ArrayList<Integer>(listInteger);
-                newListInteger.add(candidate);
-                newListListInteger.add(newListInteger);
-            }
-        }
-        return newListListInteger;
+    private boolean isSolution(ArrayList<Integer> integerArrayList, int sum) {
+        return sum == target;
     }
 }
