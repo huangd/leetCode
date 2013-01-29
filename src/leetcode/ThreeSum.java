@@ -1,6 +1,9 @@
 package leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: huangd
@@ -9,42 +12,44 @@ import java.util.*;
  */
 public class ThreeSum {
 
-    private Map<String, Integer> sumMap;
+    private Set<ArrayList<Integer>> resultSet;
+    private int[] num;
 
-    //This is a buggy solution
     public ArrayList<ArrayList<Integer>> threeSum(int[] num) {
-        Set<String> duplicateSet = new HashSet<String>();
-        ArrayList<ArrayList<Integer>> listListInteger = new ArrayList<ArrayList<Integer>>();
+        resultSet = new HashSet<ArrayList<Integer>>();
         Arrays.sort(num);
-        initSumMap(num);
-        for(String string : sumMap.keySet()){
-            int twoSum = sumMap.get(string);
-            String[] twoStrings = string.split(",");
-            int firstIndex = Integer.parseInt(twoStrings[0]);
-            int secondIndex = Integer.parseInt(twoStrings[1]);
-            for(int thirdIndex=0; thirdIndex<num.length; ++thirdIndex){
-                if(thirdIndex > secondIndex && num[thirdIndex]+twoSum == 0){
-                    ArrayList<Integer> listInteger = new ArrayList<Integer>();
-                    listInteger.add(num[firstIndex]);
-                    listInteger.add(num[secondIndex]);
-                    listInteger.add(num[thirdIndex]);
-                    String content = num[firstIndex]+num[secondIndex]+num[thirdIndex]+"";
-                    if(!duplicateSet.contains(content)){
-                        duplicateSet.add(content);
-                        listListInteger.add(listInteger);
-                    }
+        this.num = num;
+        process();
+        return setToArray(resultSet);
+    }
+
+    private void process() {
+        for (int i = 0; i < num.length; ++i) {
+            int j = i + 1;
+            int k = num.length - 1;
+            while (j < k) {
+                if (num[i] + num[j] + num[k] < 0) {
+                    j++;
+                } else if (num[i] + num[j] + num[k] > 0) {
+                    k--;
+                } else {
+                    ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+                    integerArrayList.add(num[i]);
+                    integerArrayList.add(num[j]);
+                    integerArrayList.add(num[k]);
+                    resultSet.add(integerArrayList);
+                    j++;
+                    k--;
                 }
             }
         }
-        return listListInteger;
     }
 
-    private void initSumMap(int[] num){
-        sumMap = new HashMap<String, Integer>();
-        for(int i=0; i<num.length-1; ++i){
-            for(int j=i+1; j<num.length;++j){
-                sumMap.put(i+","+j, num[i]+num[j]);
-            }
+    private ArrayList<ArrayList<Integer>> setToArray(Set<ArrayList<Integer>> resultSet) {
+        ArrayList<ArrayList<Integer>> resultList = new ArrayList<ArrayList<Integer>>();
+        for (ArrayList<Integer> integerArrayList : resultSet) {
+            resultList.add(integerArrayList);
         }
+        return resultList;
     }
 }
