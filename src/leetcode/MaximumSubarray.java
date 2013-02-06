@@ -14,9 +14,7 @@ public class MaximumSubarray {
         int current = 0;
         for (int i : A) {
             current = Math.max(current + i, i);
-            if (current > max) {
-                max = current;
-            }
+            max = Math.max(max, current);
         }
         return max;
     }
