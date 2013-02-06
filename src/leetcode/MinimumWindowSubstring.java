@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class MinimumWindowSubstring {
 
+    //Very good summary using two tables: hasFound, needToFind and a counter
+    // http://leetcode.com/2010/11/finding-minimum-window-in-s-which.html
     private String min;
     private Map<Character, LinkedList<Integer>> charIndex;
     private Map<Character, Integer> charNumber;
