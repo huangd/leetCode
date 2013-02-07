@@ -9,88 +9,69 @@ import java.util.ArrayList;
  */
 public class NQueens {
 
-    //TODO: there are bugs here.
-    private ArrayList<String[]> result;
+    private ArrayList<String[]> results;
 
     public ArrayList<String[]> solveNQueens(int n) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        result = new ArrayList<String[]>();
-        char[][] nn = new char[n][n];
-        init(nn);
-        process(nn, 0);
-        return result;
+        results = new ArrayList<String[]>();
+        backtrack(new int[n], 0);
+        return results;
     }
 
-    private void process(char[][] nn, int n) {
-        if (nn.length == 1) {
-            if (isValid(nn, 0, 0)) {
-                addAResult(nn);
-            }
+    private void backtrack(int[] positions, int current) {
+        if (isSolution(positions, current)) {
+            updateResult(positions);
         } else {
-            for (int i = 0; i < nn.length; ++i) {
-                if (isValid(nn, n, i)) {
-                    if (n == nn.length) {
-                        addAResult(nn);
-                    } else {
-                        process(nn, n + 1);
-                    }
-                    nn[n][i] = '.';
-                    continue;
+            int[] candidates = getCandidates(positions, current);
+            for (int i = 0; i < candidates.length; ++i) {
+                positions[current] = candidates[i];
+                backtrack(positions, current + 1);
+            }
+        }
+    }
+
+    private boolean isSolution(int[] positions, int current) {
+        return positions.length == current;
+    }
+
+    private void updateResult(int[] positions) {
+        String[] oneResult = new String[positions.length];
+        for (int i = 0; i < oneResult.length; ++i) {
+            String aRow = "";
+            for (int j = 0; j < positions.length; ++j) {
+                if (positions[i] == j) {
+                    aRow += "Q";
+                } else {
+                    aRow += ".";
                 }
             }
+            oneResult[i] = aRow;
         }
+        results.add(oneResult);
     }
 
-    private void init(char[][] nn) {
-        for (int i = 0; i < nn.length; ++i) {
-            for (int j = 0; j < nn[0].length; ++j) {
-                nn[i][j] = '.';
+    private int[] getCandidates(int[] positions, int current) {
+        ArrayList<Integer> candidateList = new ArrayList<Integer>();
+        for (int i = 0; i < positions.length; ++i) {
+            boolean isCandidate = true;
+            for (int j = 0; j < current; ++j) {
+                boolean isVertical = positions[j] == i;
+                boolean forwardCross = (j - positions[j]) == (current - i);
+                boolean backwardCross = (j - (positions.length - positions[j] - 1)) == (current - (positions.length - i - 1));
+                if (isVertical || forwardCross || backwardCross) {
+                    isCandidate = false;
+                    break;
+                }
+            }
+            if (isCandidate) {
+                candidateList.add(i);
             }
         }
-    }
-
-    private void addAResult(char[][] nn) {
-        String[] lines = new String[nn.length];
-        for (int i = 0; i < nn.length; ++i) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int j = 0; j < nn[0].length; ++j) {
-                stringBuilder.append(nn[i][j]);
-            }
-            lines[i] = stringBuilder.toString();
+        int[] candidates = new int[candidateList.size()];
+        for (int i = 0; i < candidates.length; ++i) {
+            candidates[i] = candidateList.get(i);
         }
-        result.add(lines);
-    }
-
-    private boolean isValid(char[][] nn, int x, int y) {
-        if (isVerticalValid(nn, x, y) && isCrossValid(nn, x, y)) {
-            nn[x][y] = 'Q';
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isVerticalValid(char[][] nn, int x, int y) {
-        for (int i = 0; i < y; ++i) {
-            if (nn[x][i] == 'Q') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isCrossValid(char[][] nn, int x, int y) {
-        for (int i = x, j = y; i < nn.length && j > 0; ++i, --j) {
-            if (nn[i][j] == 'Q') {
-                return false;
-            }
-        }
-        for (int i = x, j = y; i > 0 && j > 0; --i, --j) {
-            if (nn[i][j] == 'Q') {
-                return false;
-            }
-        }
-        return true;
+        return candidates;
     }
 }

@@ -11,7 +11,7 @@ public class NQueensTest {
     @Test
     public void testSolveNQueens() throws Exception {
         NQueens nQueens = new NQueens();
-        int n = 2;
+        int n = 4;
         nQueens.solveNQueens(n);
     }
 }
