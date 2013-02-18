@@ -10,13 +10,7 @@ public class SymmetricTree {
         // Start typing your Java solution below
         // DO NOT write main() function
         if (root != null) {
-            if (root.left == null && root.right == null) {
-                return true;
-            } else if (root.left != null && root.right != null) {
-                return isSymmetricalNode(root.left, root.right);
-            } else {
-                return false;
-            }
+            return isSymmetricalNode(root.left, root.right);
         } else {
             return true;
         }
