@@ -38,11 +38,11 @@ public class LongestConsecutiveSequence {
     }
 
     private void updateEdge(int left, int right) {
-        int leftLenght = numberLength.get(left);
-        int rightLenght = numberLength.get(right);
-        int totalLenght = leftLenght + rightLenght;
-        longest = Math.max(longest, totalLenght);
-        numberLength.put(right + rightLenght - 1, totalLenght);
-        numberLength.put(left - leftLenght + 1, totalLenght);
+        int leftLength = numberLength.get(left);
+        int rightLength = numberLength.get(right);
+        int totalLength = leftLength + rightLength;
+        longest = Math.max(longest, totalLength);
+        numberLength.put(right + rightLength - 1, totalLength);
+        numberLength.put(left - leftLength + 1, totalLength);
     }
 }
