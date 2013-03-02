@@ -48,17 +48,9 @@ public class DecodeWays {
     }
 
     private boolean isCombinable(char a, char b) {
-        int aInt = Integer.parseInt(a + "");
-        int bInt = Integer.parseInt(b + "");
-
-        if (aInt == 1) {
+        int abInt = Integer.parseInt(a + "" + b);
+        if (abInt >= 10 && abInt <= 26) {
             return true;
-        } else if (aInt == 2) {
-            if (bInt >= 0 && bInt <= 6) {
-                return true;
-            } else {
-                return false;
-            }
         } else {
             return false;
         }
