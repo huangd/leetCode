@@ -35,18 +35,12 @@ public class LongestValidParentheses {
             current = 0;
         } else {
             if (stack.isEmpty()) {
-                updateLongest();
+                longest = Math.max(longest, current);
                 current = 0;
             } else {
                 current += stack.pop();
-                updateLongest();
+                longest = Math.max(longest, current);
             }
-        }
-    }
-
-    private void updateLongest() {
-        if (current > longest) {
-            longest = current;
         }
     }
 }
