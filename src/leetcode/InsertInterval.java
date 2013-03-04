@@ -26,35 +26,18 @@ public class InsertInterval {
             int start = newInterval.start;
             int end = newInterval.end;
             Interval currentInterval = intervals.get(index);
-            if (start < currentInterval.start) {
-                if (end < currentInterval.start) {
-                    mergedList.add(newInterval);
-                    addRest(intervals, index, mergedList);
-                    newInterval = null;
-                    break;
-                }
-                if (end >= currentInterval.start && end <= currentInterval.end) {
-                    Interval aInterval = new Interval(start, currentInterval.end);
-                    mergedList.add(aInterval);
-                    addRest(intervals, index + 1, mergedList);
-                    newInterval = null;
-                    break;
-                }
-            } else if (start >= currentInterval.start && start <= currentInterval.end) {
-                if (end <= currentInterval.end) {
-                    addRest(intervals, index, mergedList);
-                    newInterval = null;
-                    break;
-                } else {//end>currentInterval.end
-                    newInterval = new Interval(currentInterval.start, end);
-                }
-            } else {//start > currentInterval.end
+            if (end < currentInterval.start) {
+                mergedList.add(newInterval);
+                addRest(intervals, index, mergedList);
+                return;
+            } else if (currentInterval.end < start) {
                 mergedList.add(currentInterval);
+            } else {
+                newInterval
+                        = new Interval(Math.min(start, currentInterval.start), Math.max(end, currentInterval.end));
             }
         }
-        if (newInterval != null) {
-            mergedList.add(newInterval);
-        }
+        mergedList.add(newInterval);
     }
 
     private void addRest(ArrayList<Interval> from, int index, ArrayList<Interval> to) {
