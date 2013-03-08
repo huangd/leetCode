@@ -1,9 +1,5 @@
 package leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * User: huangd
  * Date: 12/25/12
@@ -11,38 +7,28 @@ import java.util.Set;
  */
 public class LongestSubstringWithoutRepeatingCharacters {
 
-    private Map<Character, Integer> charIndexMap;
+    private int[] charCount;
 
     public int lengthOfLongestSubstring(String s) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        charIndexMap = new HashMap<Character, Integer>();
+        charCount = new int[26];
         int maxLength = 0;
-        int length = 0;
+        int startIndex = 0;
         for (int i = 0; i < s.length(); ++i) {
-            Integer charIndex = charIndexMap.get(s.charAt(i));
-            if (charIndex != null) {
-                charIndexMap = updateCharIndexMap(charIndex);
-                length = i - charIndex;
+            char aChar = s.charAt(i);
+            charCount[aChar - 'a']++;
+            if (charCount[aChar - 'a'] == 1) {
+                maxLength = Math.max(maxLength, i - startIndex + 1);
             } else {
-                length += 1;
-            }
-            charIndexMap.put(s.charAt(i), i);
-            if (length > maxLength) {
-                maxLength = length;
+                while (s.charAt(startIndex) != aChar) {
+                    charCount[s.charAt(startIndex) - 'a']--;
+                    startIndex++;
+                }
+                charCount[s.charAt(startIndex) - 'a']--;
+                startIndex++;
             }
         }
         return maxLength;
-    }
-
-    private Map<Character, Integer> updateCharIndexMap(int index) {
-        Map<Character, Integer> updatedCharIndexMap = new HashMap<Character, Integer>();
-        Set<Character> keySet = charIndexMap.keySet();
-        for (Character character : keySet) {
-            if (charIndexMap.get(character) > index) {
-                updatedCharIndexMap.put(character, charIndexMap.get(character));
-            }
-        }
-        return updatedCharIndexMap;
     }
 }
