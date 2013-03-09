@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * User: huangd
@@ -20,10 +21,22 @@ public class BinaryTreeInorderTraversal {
     }
 
     private void inOrder(TreeNode treeNode) {
-        if (treeNode != null) {
-            inOrder(treeNode.left);
-            resultList.add(treeNode.val);
-            inOrder(treeNode.right);
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode current = treeNode;
+        boolean isFinished = false;
+        while (!isFinished) {
+            if (current != null) {
+                stack.push(current);
+                current = current.left;
+            } else {
+                if (stack.isEmpty()) {
+                    isFinished = true;
+                } else {
+                    current = stack.pop();
+                    resultList.add(current.val);
+                    current = current.right;
+                }
+            }
         }
     }
 }
