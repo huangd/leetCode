@@ -22,13 +22,7 @@ public class MergeKSortedLists {
         heap = new PriorityQueue<ListNode>(lists.size(), new Comparator<ListNode>() {
             @Override
             public int compare(ListNode listNode1, ListNode listNode2) {
-                if (listNode1.val > listNode2.val) {
-                    return 1;
-                } else if (listNode1.val == listNode2.val) {
-                    return 0;
-                } else {
-                    return -1;
-                }
+                return new Integer(listNode1.val).compareTo(new Integer(listNode2.val));
             }
         });
         ListNode dumbHead = new ListNode(0);
