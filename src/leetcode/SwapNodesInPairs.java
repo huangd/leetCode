@@ -9,14 +9,14 @@ public class SwapNodesInPairs {
     public ListNode swapPairs(ListNode head) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        ListNode newHead = new ListNode(0);//This is the key point to create a util node
-        newHead.next = head;
-        ListNode current = newHead;
+        ListNode dumbHead = new ListNode(0);//This is the key point to create a util node
+        dumbHead.next = head;
+        ListNode current = dumbHead;
         while (current.next != null && current.next.next != null) {
             current.next = swapOnePair(current.next);
             current = current.next.next;
         }
-        return newHead.next;
+        return dumbHead.next;
     }
 
     private ListNode swapOnePair(ListNode listNode) {
