@@ -7,40 +7,49 @@ package leetcode;
  */
 public class SearchA2DMatrix {
 
-    private int row;
-    private int column;
     private int[][] matrix;
 
     public boolean searchMatrix(int[][] matrix, int target) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        row = matrix.length;
-        column = matrix[0].length;
         this.matrix = matrix;
-        return binarySearch(0, row * column, target);
+        int row = binarySearchRow(0, matrix.length, target);
+        return binarySearchColumn(0, matrix[0].length, row, target);
     }
 
-    private boolean binarySearch(int from, int to, int target) {
+    private int binarySearchRow(int from, int to, int target) {
         if (from < to) {
-            int midIndex = (to - from) / 2 + from;
-            int midValue = getValue(midIndex);
+            int midIndex = (from + to) / 2;
+            int midValue = matrix[midIndex][0];
+            if (midValue == target) {
+                return midIndex;
+            } else {
+                if (midValue < target) {
+                    return binarySearchRow(midIndex + 1, to, target);
+                } else {
+                    return binarySearchRow(from, midIndex, target);
+                }
+            }
+        } else {
+            return from == 0 ? 0 : from - 1;
+        }
+    }
+
+    private boolean binarySearchColumn(int from, int to, int row, int target) {
+        if (from < to) {
+            int midIndex = (from + to) / 2;
+            int midValue = matrix[row][midIndex];
             if (midValue == target) {
                 return true;
             } else {
                 if (midValue < target) {
-                    return binarySearch(midIndex + 1, to, target);
+                    return binarySearchColumn(midIndex + 1, to, row, target);
                 } else {
-                    return binarySearch(from, midIndex, target);
+                    return binarySearchColumn(from, midIndex, row, target);
                 }
             }
         } else {
             return false;
         }
-    }
-
-    private int getValue(int index) {
-        int currentRow = index / column;
-        int currentColumn = index % column;
-        return matrix[currentRow][currentColumn];
     }
 }
