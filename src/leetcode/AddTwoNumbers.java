@@ -10,7 +10,6 @@ public class AddTwoNumbers {
         // Start typing your Java solution below
         // DO NOT write main() function
         ListNode dumbNode = new ListNode(0);
-        dumbNode.next = l1;
         ListNode pre = dumbNode;
         int carryOver = 0;
         while (l1 != null && l2 != null) {
@@ -22,7 +21,8 @@ public class AddTwoNumbers {
                 carryOver = 0;
             }
             l1.val = sum;
-            pre = l1;
+            pre.next = l1;
+            pre = pre.next;
             l1 = l1.next;
             l2 = l2.next;
         }
@@ -49,7 +49,6 @@ public class AddTwoNumbers {
     private ListNode addOne(ListNode listNode) {
         int carryOver = 1;
         ListNode dumbNode = new ListNode(0);
-        dumbNode.next = listNode;
         ListNode pre = dumbNode;
         while (listNode != null) {
             int sum = listNode.val + carryOver;
@@ -60,7 +59,8 @@ public class AddTwoNumbers {
                 carryOver = 0;
             }
             listNode.val = sum;
-            pre = listNode;
+            pre.next = listNode;
+            pre = pre.next;
             listNode = listNode.next;
         }
         if (carryOver == 1) {
