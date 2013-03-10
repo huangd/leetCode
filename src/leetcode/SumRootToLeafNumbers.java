@@ -1,6 +1,8 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: huangd
@@ -27,19 +29,24 @@ public class SumRootToLeafNumbers {
         if (treeNode.left == null && treeNode.right == null) {
             sum += digitListToInteger(digitList);
         } else {
-            if (treeNode.left != null) {
-                int left = treeNode.left.val;
-                digitList.add(left + "");
-                backtrack(digitList, treeNode.left);
-                digitList.remove(digitList.size() - 1);
-            }
-            if (treeNode.right != null) {
-                int right = treeNode.right.val;
-                digitList.add(right + "");
-                backtrack(digitList, treeNode.right);
+            Set<TreeNode> candidates = getCandidates(treeNode);
+            for (TreeNode candidate : candidates) {
+                digitList.add(candidate.val + "");
+                backtrack(digitList, candidate);
                 digitList.remove(digitList.size() - 1);
             }
         }
+    }
+
+    private Set<TreeNode> getCandidates(TreeNode treeNode) {
+        Set<TreeNode> candidates = new HashSet<TreeNode>();
+        if (treeNode.left != null) {
+            candidates.add(treeNode.left);
+        }
+        if (treeNode.right != null) {
+            candidates.add(treeNode.right);
+        }
+        return candidates;
     }
 
     private int digitListToInteger(ArrayList<String> digitList) {
