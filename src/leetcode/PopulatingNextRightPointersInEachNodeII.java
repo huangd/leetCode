@@ -6,49 +6,35 @@ package leetcode;
  * Time: 11:23 PM
  */
 public class PopulatingNextRightPointersInEachNodeII {
-    //There is still a bug in this solution.
+
     public void connect(TreeLinkNode root) {
         // Start typing your Java solution below
         // DO NOT write main() function
         if (root != null) {
             if (root.left != null) {
-                TreeLinkNode next = null;
-                TreeLinkNode rootNext = root.next;
                 if (root.right != null) {
-                    next = root.right;
+                    root.left.next = root.right;
                 } else {
-                    while (rootNext != null) {
-                        if (rootNext.left != null) {
-                            next = rootNext.left;
-                            break;
-                        } else if (rootNext.right != null) {
-                            next = rootNext.right;
-                            break;
-                        } else {
-                            rootNext = rootNext.next;
-                        }
-                    }
+                    root.left.next = getNextNeighbor(root.next);
                 }
-                root.left.next = next;
             }
             if (root.right != null) {
-                TreeLinkNode next = null;
-                TreeLinkNode rootNext = root.next;
-                while (rootNext != null) {
-                    if (rootNext.left != null) {
-                        next = rootNext.left;
-                        break;
-                    } else if (rootNext.right != null) {
-                        next = rootNext.right;
-                        break;
-                    } else {
-                        rootNext = rootNext.next;
-                    }
-                }
-                root.right.next = next;
+                root.right.next = getNextNeighbor(root.next);
             }
             connect(root.left);
             connect(root.right);
+        }
+    }
+
+    private TreeLinkNode getNextNeighbor(TreeLinkNode treeLinkNode) {
+        if (treeLinkNode == null) {
+            return null;
+        } else if (treeLinkNode.left != null) {
+            return treeLinkNode.left;
+        } else if (treeLinkNode.right != null) {
+            return treeLinkNode.right;
+        } else {
+            return getNextNeighbor(treeLinkNode.next);
         }
     }
 }
