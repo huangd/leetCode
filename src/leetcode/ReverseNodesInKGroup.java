@@ -32,7 +32,6 @@ public class ReverseNodesInKGroup {
                     next = current.next;
                 }
             }
-
             dumbHead.next = pre;
             start.next = reverseKGroup(end, k);
 
