@@ -1,7 +1,5 @@
 package leetcode;
 
-import java.util.ArrayList;
-
 /**
  * User: huangd
  * Date: 3/9/13
@@ -12,37 +10,44 @@ public class PopulatingNextRightPointersInEachNodeII {
         // Start typing your Java solution below
         // DO NOT write main() function
         if (root != null) {
-            process(root);
-        }
-    }
-
-    private void process(TreeLinkNode root) {
-        ArrayList<TreeLinkNode> current = new ArrayList<TreeLinkNode>();
-        ArrayList<TreeLinkNode> next = new ArrayList<TreeLinkNode>();
-        current.add(root);
-        while (true) {
-            link(current);
-            for (int i = 0; i < current.size(); ++i) {
-                TreeLinkNode currentNode = current.get(i);
-                if (currentNode.left != null) {
-                    next.add(currentNode.left);
+            if (root.left != null) {
+                TreeLinkNode next = null;
+                TreeLinkNode rootNext = root.next;
+                if (root.right != null) {
+                    next = root.right;
+                } else {
+                    while (rootNext != null) {
+                        if (rootNext.left != null) {
+                            next = rootNext.left;
+                            break;
+                        } else if (rootNext.right != null) {
+                            next = rootNext.right;
+                            break;
+                        } else {
+                            rootNext = rootNext.next;
+                        }
+                    }
                 }
-                if (currentNode.right != null) {
-                    next.add(currentNode.right);
+                root.left.next = next;
+            }
+            if (root.right != null) {
+                TreeLinkNode next = null;
+                TreeLinkNode rootNext = root.next;
+                while (rootNext != null) {
+                    if (rootNext.left != null) {
+                        next = rootNext.left;
+                        break;
+                    } else if (rootNext.right != null) {
+                        next = rootNext.right;
+                        break;
+                    } else {
+                        rootNext = rootNext.next;
+                    }
                 }
+                root.right.next = next;
             }
-            if (next.size() > 0) {
-                current = next;
-                next = new ArrayList<TreeLinkNode>();
-            } else {
-                break;
-            }
-        }
-    }
-
-    private void link(ArrayList<TreeLinkNode> current) {
-        for (int i = 1; i < current.size(); ++i) {
-            current.get(i - 1).next = current.get(i);
+            connect(root.left);
+            connect(root.right);
         }
     }
 }
