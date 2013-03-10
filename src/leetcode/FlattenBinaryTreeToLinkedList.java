@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Stack;
+
 /**
  * User: huangd
  * Date: 2/1/13
@@ -9,29 +11,29 @@ public class FlattenBinaryTreeToLinkedList {
     public void flatten(TreeNode root) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        preOrder(root);
+        if (root != null) {
+            preOrder(root);
+        }
     }
 
-    private TreeNode preOrder(TreeNode treeNode) {
-        if (treeNode == null) {
-            return null;
-        } else {
-            TreeNode leftChild = treeNode.left;
-            TreeNode rightChild = treeNode.right;
-
-            TreeNode leftEnd = preOrder(treeNode.left);
-            if (leftEnd == null) {
-                leftEnd = treeNode;
+    private void preOrder(TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode pre = null;
+        stack.push(treeNode);
+        while (!stack.isEmpty()) {
+            TreeNode current = stack.pop();
+            if (current.right != null) {
+                stack.push(current.right);
             }
-            TreeNode rightEnd = preOrder(treeNode.right);
-            if (rightEnd == null) {
-                rightEnd = leftEnd;
+            if (current.left != null) {
+                stack.push(current.left);
             }
-
-            treeNode.left = null;
-            treeNode.right = leftChild;
-            leftEnd.right = rightChild;
-            return rightEnd;
+            if (pre != null) {
+                pre.right = current;
+            }
+            current.left = null;
+            current.right = null;
+            pre = current;
         }
     }
 }
