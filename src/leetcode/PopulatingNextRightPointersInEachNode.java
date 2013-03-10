@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.ArrayList;
 
 /**
  * User: huangd
@@ -12,38 +9,42 @@ import java.util.Queue;
  */
 public class PopulatingNextRightPointersInEachNode {
 
-    private Queue<TreeLinkNode> queue;
-    private Map<TreeLinkNode, Integer> nodeLevel;
 
     public void connect(TreeLinkNode root) {
         // Start typing your Java solution below
         // DO NOT write main() function
         if (root != null) {
-            nodeLevel = new HashMap<TreeLinkNode, Integer>();
-            nodeLevel.put(root, 1);
-            queue = new LinkedList<TreeLinkNode>();
-            queue.add(root);
-            process();
+            process(root);
         }
     }
 
-    private void process() {
-        while (!queue.isEmpty()) {
-            TreeLinkNode node = queue.poll();
-            TreeLinkNode nextNode = queue.peek();
-            if (nextNode != null) {
-                if (nodeLevel.get(nextNode) == nodeLevel.get(node)) {
-                    node.next = nextNode;
+    private void process(TreeLinkNode root) {
+        ArrayList<TreeLinkNode> current = new ArrayList<TreeLinkNode>();
+        ArrayList<TreeLinkNode> next = new ArrayList<TreeLinkNode>();
+        current.add(root);
+        while (true) {
+            link(current);
+            for (int i = 0; i < current.size(); ++i) {
+                TreeLinkNode currentNode = current.get(i);
+                if (currentNode.left != null) {
+                    next.add(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    next.add(currentNode.right);
                 }
             }
-            if (node.left != null) {
-                nodeLevel.put(node.left, nodeLevel.get(node) + 1);
-                queue.add(node.left);
+            if (next.size() > 0) {
+                current = next;
+                next = new ArrayList<TreeLinkNode>();
+            } else {
+                break;
             }
-            if (node.right != null) {
-                nodeLevel.put(node.right, nodeLevel.get(node) + 1);
-                queue.add(node.right);
-            }
+        }
+    }
+
+    private void link(ArrayList<TreeLinkNode> current) {
+        for (int i = 1; i < current.size(); ++i) {
+            current.get(i - 1).next = current.get(i);
         }
     }
 }
