@@ -9,9 +9,6 @@ public class Pow {
     public double pow(double x, int n) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        if (n == 0) {
-            return 1;
-        }
         boolean isNegative = n >= 0 ? false : true;
         n = Math.abs(n);
         double result = 1;
