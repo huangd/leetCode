@@ -36,4 +36,33 @@ public class RecursiveIteratorTest {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    public void testIterator_withEmptySet() throws Exception {
+        Set recursiveSet = new HashSet();
+        recursiveSet.add(new Integer(1));
+        Set emptySet = new HashSet();
+        recursiveSet.add(emptySet);
+        Set recursiveSubSet = new HashSet();
+        recursiveSubSet.add(new Integer(2));
+        recursiveSubSet.add(new Integer(4));
+        recursiveSubSet.add(new HashSet());
+        recursiveSet.add(recursiveSubSet);
+        recursiveSet.add(new Integer(3));
+
+        RecursiveIterator recursiveIterator = new RecursiveIterator(recursiveSet);
+
+        Set result = new HashSet();
+        while (recursiveIterator.hasNext()) {
+            result.add(recursiveIterator.next());
+        }
+
+        Set expected = new HashSet();
+        expected.add(new Integer(1));
+        expected.add(new Integer(2));
+        expected.add(new Integer(3));
+        expected.add(new Integer(4));
+
+        assertEquals(expected, result);
+    }
 }

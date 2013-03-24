@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Stack;
 
@@ -11,6 +12,7 @@ import java.util.Stack;
  */
 public class RecursiveIterator implements Iterator {
     private Stack<Iterator> stack = new Stack<Iterator>();
+    private Integer next = null;
 
     public RecursiveIterator(Set nestedSet) {
         stack.push(nestedSet.iterator());
@@ -18,29 +20,43 @@ public class RecursiveIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        if (stack.isEmpty()) {
-            return false;
-        } else {
-            Iterator currentIterator = stack.peek();
-            if (!currentIterator.hasNext()) {
-                stack.pop();
-                return hasNext();
+        if (next == null) {
+            if (stack.isEmpty()) {
+                return false;
             } else {
-                return true;
+                Iterator currentIterator = stack.peek();
+                if (currentIterator.hasNext()) {
+                    Object object = currentIterator.next();
+                    if (object instanceof Integer) {
+                        next = (Integer) object;
+                        return true;
+                    } else {
+                        Set set = (Set) object;
+                        stack.add(set.iterator());
+                        return hasNext();
+                    }
+                } else {
+                    stack.pop();
+                    return hasNext();
+                }
             }
+        } else {
+            return true;
         }
     }
 
     @Override
     public Object next() {
-        Iterator currentIterator = stack.peek();
-        Object object = currentIterator.next();
-        if (object instanceof Integer) {
-            return object;
+        if (next == null) {
+            if (hasNext()) {
+                return next();
+            } else {
+                throw new NoSuchElementException();
+            }
         } else {
-            Set set = (Set) object;
-            stack.push(set.iterator());
-            return next();
+            Integer result = new Integer(next);
+            next = null;
+            return result;
         }
     }
 
