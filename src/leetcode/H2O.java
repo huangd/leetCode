@@ -1,6 +1,8 @@
 package leetcode;
 
 import java.util.Random;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: huangd
@@ -8,39 +10,31 @@ import java.util.Random;
  * Time: 6:02 PM
  */
 public class H2O {
-
-    private int currentH = 0;
-    private int currentO = 0;
-    private int releaseH = 0;
-    private int releaseO = 0;
+    private AtomicInteger currentH = new AtomicInteger(0);
+    private AtomicInteger currentO = new AtomicInteger(0);
+    private Semaphore semaphoreH = new Semaphore(0);
+    private Semaphore semaphoreO = new Semaphore(0);
 
     private int totalWater = 0;
 
-    public synchronized void H() throws InterruptedException {
-        currentH += 1;
+    public void H() throws InterruptedException {
+        currentH.incrementAndGet();
         update();
-        while (releaseH <= 0) {
-            wait();
-        }
-        releaseH -= 1;
+        semaphoreH.acquire();
     }
 
-    public synchronized void O() throws InterruptedException {
-        currentO += 1;
+    public void O() throws InterruptedException {
+        currentO.incrementAndGet();
         update();
-        while (releaseO <= 0) {
-            wait();
-        }
-        releaseO -= 1;
+        semaphoreO.acquire();
     }
 
     public synchronized void update() {
-        if (currentH >= 2 && currentO >= 1) {
-            releaseH += 2;
-            releaseO += 1;
-            currentH -= 2;
-            currentO -= 1;
-            notifyAll();
+        if (currentH.get() >= 2 && currentO.get() >= 1) {
+            currentH.addAndGet(-2);
+            currentO.addAndGet(-1);
+            semaphoreH.release(2);
+            semaphoreO.release();
             totalWater += 1;
         }
     }
@@ -63,12 +57,13 @@ public class H2O {
         Thread.sleep(5000);
         System.out.println("Total H: " + totalH);
         System.out.println("Total O: " + totalO);
+        System.out.println("SemaphoreO: " + h2O.semaphoreO.getQueueLength());
+        System.out.println("SemaphoreH: " + h2O.semaphoreH.getQueueLength());
         System.out.println("Total H2O: " + h2O.totalWater);
     }
 }
 
 class H2OThread extends Thread {
-
     private H2O h2O;
     private H2OType h2OType;
 
