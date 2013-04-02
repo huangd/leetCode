@@ -25,9 +25,9 @@ public class TextJustification {
                 if (spaceUsed + words[i].length() + 1 <= L) {
                     spaceUsed += words[i].length() + 1;
                 } else {
+                    justifiedText.add(justifyALine(Arrays.copyOfRange(words, lineStartIndex, i), L));
                     isFirstWord = true;
                     spaceUsed = 0;
-                    justifiedText.add(justifyALine(Arrays.copyOfRange(words, lineStartIndex, i), L));
                     --i;
                 }
             }
