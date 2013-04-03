@@ -1,6 +1,8 @@
 package leetcode;
 
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,17 +42,19 @@ public class H2O {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        int TOTAL_THREAD = 2000;
         int totalH = 0;
         int totalO = 0;
         H2O h2O = new H2O();
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(TOTAL_THREAD);
         Random random = new Random(System.currentTimeMillis());
-        for (int i = 0; i < 500; ++i) {
+        for (int i = 0; i < TOTAL_THREAD; ++i) {
             boolean isO = random.nextInt() % 3 == 0 ? true : false;
             if (isO) {
-                new H2OThread(h2O, H2OType.O).start();
+                new H2OThread(h2O, H2OType.O, cyclicBarrier).start();
                 totalO++;
             } else {
-                new H2OThread(h2O, H2OType.H).start();
+                new H2OThread(h2O, H2OType.H, cyclicBarrier).start();
                 totalH++;
             }
         }
@@ -66,27 +70,29 @@ public class H2O {
 class H2OThread extends Thread {
     private H2O h2O;
     private H2OType h2OType;
+    private CyclicBarrier cyclicBarrier;
 
-    public H2OThread(H2O h2O, H2OType h2OType) {
+    public H2OThread(H2O h2O, H2OType h2OType, CyclicBarrier cyclicBarrier) {
         this.h2O = h2O;
         this.h2OType = h2OType;
+        this.cyclicBarrier = cyclicBarrier;
     }
 
     @Override
     public void run() {
-        if (h2OType == H2OType.H) {
-            try {
+        try {
+            cyclicBarrier.await();
+            if (h2OType == H2OType.H) {
                 h2O.H();
-            } catch (InterruptedException e) {
-                return;
-            }
-        } else {
-            try {
+            } else {
                 h2O.O();
-            } catch (InterruptedException e) {
-                return;
             }
+        } catch (InterruptedException e) {
+            ;
+        } catch (BrokenBarrierException e) {
+            ;
         }
+
     }
 }
 
