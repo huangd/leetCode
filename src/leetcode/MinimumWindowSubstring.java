@@ -50,9 +50,7 @@ public class MinimumWindowSubstring {
         count = 0;
         hasFound = new int[256];
         needToFind = new int[256];
-
-        for (int i = 0; i < T.length(); ++i) {
-            char c = T.charAt(i);
+        for (char c : T.toCharArray()) {
             needToFind[c]++;
         }
     }
