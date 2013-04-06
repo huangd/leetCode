@@ -23,32 +23,28 @@ public class BlockingQueue<E> {
         list = new ArrayList<E>(queueSize);
     }
 
-    public E take() {
+    public E take() throws InterruptedException {
+        lock.lock();
         try {
-            lock.lock();
             while (list.isEmpty()) {
                 emptyCondition.await();
             }
             E element = list.remove(0);
-            fullCondition.signalAll();
+            fullCondition.signal();
             return element;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         } finally {
             lock.unlock();
         }
     }
 
-    public void put(E element) {
+    public void put(E element) throws InterruptedException {
+        lock.lock();
         try {
-            lock.lock();
             while (list.size() == queueSize) {
                 fullCondition.await();
             }
             list.add(element);
-            emptyCondition.signalAll();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            emptyCondition.signal();
         } finally {
             lock.unlock();
         }
