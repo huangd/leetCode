@@ -15,8 +15,7 @@ public class ValidParentheses {
         // Start typing your Java solution below
         // DO NOT write main() function
         stack = new Stack<String>();
-        for (int i = 0; i < s.length(); ++i) {
-            char c = s.charAt(i);
+        for (char c : s.toCharArray()) {
             if (c == '(' || c == '{' || c == '[') {
                 stack.push(c + "");
             } else {
@@ -34,7 +33,9 @@ public class ValidParentheses {
     }
 
     private boolean isMatch(char a, char b) {
-        if (a == '(' && b == ')' || a == '{' && b == '}' || a == '[' && b == ']') {
+        if (a == '(' && b == ')' ||
+                a == '{' && b == '}' ||
+                a == '[' && b == ']') {
             return true;
         } else {
             return false;
