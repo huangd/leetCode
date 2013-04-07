@@ -10,40 +10,28 @@ public class ValidateBinarySearchTree {
     public boolean isValidBST(TreeNode root) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        if (root == null) {
-            return true;
-        } else {
-            return process(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        }
+        return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
-    public boolean process(TreeNode node, int min, int max) {
-        if (!isValidNode(node, min, max)) {
-            return false;
+    public boolean isValidBST(TreeNode node, int min, int max) {
+        if (node == null) {
+            return true;
         } else {
-            TreeNode left = node.left;
-            TreeNode right = node.right;
-            boolean leftValid = true;
-            boolean rightValid = true;
-            if (left != null) {
-                leftValid = process(left, min, node.val);
+            if (isValidNode(node, min, max)) {
+                boolean leftValid = isValidBST(node.left, min, node.val);
+                boolean rightValid = isValidBST(node.right, node.val, max);
+                return leftValid && rightValid;
+            } else {
+                return false;
             }
-            if (right != null) {
-                rightValid = process(right, node.val, max);
-            }
-            return leftValid && rightValid;
         }
     }
 
     private boolean isValidNode(TreeNode node, int min, int max) {
-        if (node == null) {
+        if (node.val > min && node.val < max) {
             return true;
         } else {
-            if (node.val > min && node.val < max) {
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 }
