@@ -11,15 +11,19 @@ public class Pow {
         // DO NOT write main() function
         boolean isNegative = n >= 0 ? false : true;
         n = Math.abs(n);
-        double result = 1;
-        double currentPow = x;
-        while (n != 0) {
-            if (n % 2 == 1) {
-                result *= currentPow;
-            }
-            currentPow *= currentPow;
-            n /= 2;
-        }
+        double result = powPositive(x, n);
         return isNegative ? 1 / result : result;
+    }
+
+    public double powPositive(double x, int n) {
+        if (n == 0) {
+            return 1;
+        } else {
+            if (n / 2 * 2 == n) {
+                return powPositive(x, n / 2) * powPositive(x, n / 2);
+            } else {
+                return powPositive(x, n / 2) * powPositive(x, n / 2) * x;
+            }
+        }
     }
 }
