@@ -8,22 +8,16 @@ package leetcode;
 public class RemoveDuplicatesFromSortedList {
 
     public ListNode deleteDuplicates(ListNode head) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
         if (head == null) {
             return head;
-        } else {
-            ListNode dumbHead = new ListNode(head.val + 1);
-            ListNode pre = dumbHead;
-            while (head != null) {
-                if (head.val != pre.val) {
-                    pre.next = head;
-                    pre = head;
-                }
-                head = head.next;
-                pre.next = null;
-            }
-            return dumbHead.next;
         }
+        ListNode current = head;
+        ListNode next = current.next;
+        while (next != null && current.val == next.val) {
+            current.next = next.next;
+            next = current.next;
+        }
+        deleteDuplicates(next);
+        return head;
     }
 }
