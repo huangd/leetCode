@@ -7,27 +7,16 @@ package leetcode;
  */
 public class SymmetricTree {
     public boolean isSymmetric(TreeNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        if (root != null) {
-            return isSymmetricalNode(root.left, root.right);
-        } else {
+        if (root == null) {
             return true;
         }
+        return isSymmetric(root.left, root.right);
     }
 
-    private boolean isSymmetricalNode(TreeNode aNode, TreeNode bNode) {
-        if (aNode == null && bNode == null) {
+    private boolean isSymmetric(TreeNode a, TreeNode b) {
+        if (a == null && b == null) {
             return true;
-        } else if (aNode != null && bNode != null) {
-            if (aNode.val == bNode.val) {
-                return isSymmetricalNode(aNode.right, bNode.left)
-                        && isSymmetricalNode(aNode.left, bNode.right);
-            } else {
-                return false;
-            }
-        } else {
-            return false;
         }
+        return (a != null && b != null && a.val == b.val && isSymmetric(a.left, b.right) && isSymmetric(a.right, b.left));
     }
 }
