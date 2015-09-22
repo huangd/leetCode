@@ -7,19 +7,16 @@ package leetcode;
  */
 public class PlusOne {
     public int[] plusOne(int[] digits) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        int carryOver = 1;
-        for (int i = digits.length - 1; i >= 0 && carryOver == 1; --i) {
-            digits[i] = digits[i] + carryOver;
-            if (digits[i] > 9) {
+        int length = digits.length;
+        digits[length - 1] += 1;
+        for (int i = length - 1; i > 0; i--) {
+            if (digits[i] == 10) {
                 digits[i] -= 10;
-                carryOver = 1;
-            } else {
-                carryOver = 0;
+                digits[i - 1] += 1;
             }
         }
-        if (carryOver == 1) {
+        if (digits[0] == 10) {
+            digits[0] -= 10;
             return digitsPlusOne(digits);
         } else {
             return digits;
