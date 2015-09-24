@@ -12,5 +12,6 @@ public class NumberOf1Bits {
          * TODO
          * Convert int to binary string and count 1s?
          */
+        return 0;
     }
 }

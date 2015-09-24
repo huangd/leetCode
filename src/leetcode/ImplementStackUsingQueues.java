@@ -25,7 +25,7 @@ public class ImplementStackUsingQueues {
 
         // Get the top element.
         public int top() {
-
+            return 0;
         }
 
         // Return whether the stack is empty.
