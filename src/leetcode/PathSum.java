@@ -9,29 +9,13 @@ public class PathSum {
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) {
             return false;
-        } else {
-            return process(root, sum);
         }
-    }
-
-    public boolean process(TreeNode root, int sum) {
         if (root.left == null && root.right == null) {
-            if (sum == root.val) {
+            if (root.val == sum) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            boolean left = false;
-            boolean right = false;
-            if (root.left != null) {
-                left = process(root.left, sum - root.val);
-            }
-            if (root.right != null) {
-                right = process(root.right, sum - root.val);
-            }
-
-            return left || right;
+            return false;
         }
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
 }
