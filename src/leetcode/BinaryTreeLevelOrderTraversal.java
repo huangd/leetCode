@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -11,33 +12,23 @@ import java.util.Queue;
  */
 public class BinaryTreeLevelOrderTraversal {
 
-    public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        ArrayList<ArrayList<Integer>> arrayListArrayList = new ArrayList<ArrayList<Integer>>();
-        if (root != null) {
-            Queue<TreeNode> currentLevel = new LinkedList<TreeNode>();
-            Queue<TreeNode> nextLevel = new LinkedList<TreeNode>();
-            currentLevel.add(root);
-            arrayListArrayList.add(new ArrayList<Integer>());
-            while (!currentLevel.isEmpty()) {
-                TreeNode treeNode = currentLevel.poll();
-                arrayListArrayList.get(arrayListArrayList.size() - 1).add(treeNode.val);
-                if (treeNode.left != null) {
-                    nextLevel.add(treeNode.left);
-                }
-                if (treeNode.right != null) {
-                    nextLevel.add(treeNode.right);
-                }
+    private List<List<Integer>> results;
 
-                if (currentLevel.isEmpty() && !nextLevel.isEmpty()) {
-                    currentLevel = nextLevel;
-                    nextLevel = new LinkedList<TreeNode>();
-                    arrayListArrayList.add(new ArrayList<Integer>());
-                }
-            }
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        results = new ArrayList<List<Integer>>();
+        levelOrder(root, 0);
+        return results;
+    }
 
+    private void levelOrder(TreeNode root, int levelNumber) {
+        if (root == null) {
+            return;
         }
-        return arrayListArrayList;
+        if (results.size() == levelNumber) {
+            results.add(new ArrayList<Integer>());
+        }
+        results.get(levelNumber).add(root.val);
+        levelOrder(root.left, levelNumber + 1);
+        levelOrder(root.right, levelNumber + 1);
     }
 }
