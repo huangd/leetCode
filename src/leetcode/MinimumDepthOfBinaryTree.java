@@ -10,37 +10,18 @@ import java.util.Queue;
  */
 public class MinimumDepthOfBinaryTree {
 
-    private Queue<TreeNode> queue;
-
     public int minDepth(TreeNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        queue = new LinkedList<TreeNode>();
-        if (root != null) {
-            root.val = 1;
-            queue.add(root);
-        }
-        return process();
+        if (root == null) { return 0; }
+        return minDepth(root, 1);
     }
 
-    private int process() {
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            TreeNode right = node.right;
-            TreeNode left = node.left;
-            if (right == null && left == null) {
-                return node.val;
-            } else {
-                if (right != null) {
-                    right.val = node.val + 1;
-                    queue.add(right);
-                }
-                if (left != null) {
-                    left.val = node.val + 1;
-                    queue.add(left);
-                }
-            }
+    private int minDepth(TreeNode node, int currentDepth) {
+        if (node == null) {
+            return Integer.MAX_VALUE;
         }
-        return 0;
+        if (node.left == null && node.right == null) {
+            return currentDepth;
+        }
+        return Math.min(minDepth(node.left, currentDepth + 1), minDepth(node.right, currentDepth + 1));
     }
 }
