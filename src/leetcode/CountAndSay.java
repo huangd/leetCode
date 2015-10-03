@@ -11,25 +11,25 @@ public class CountAndSay {
         // DO NOT write main() function
         String current = "1";
         for (int i = 1; i < n; ++i) {
-            current = getNext(current);
+            current = countAndSay(current);
         }
         return current;
     }
 
-    private String getNext(String current) {
-        StringBuilder stringBuilder = new StringBuilder();
-        char base = ' ';
-        int repeat = 0;
-        for (int i = 0; i < current.length(); ++i) {
-            if (base == ' ' || current.charAt(i) == base) {
-                repeat++;
+    private String countAndSay(String input) {
+        char letter = input.charAt(0);
+        int count = 0;
+        StringBuilder say = new StringBuilder();
+        for(char c : input.toCharArray()) {
+            if (letter == c) {
+                count++;
             } else {
-                stringBuilder.append(repeat).append(base);
-                repeat = 1;
+                say.append(count).append(letter);
+                letter = c;
+                count = 1;
             }
-            base = current.charAt(i);
         }
-        stringBuilder.append(repeat).append(base);
-        return stringBuilder.toString();
+        say.append(count).append(letter);
+        return say.toString();
     }
 }
