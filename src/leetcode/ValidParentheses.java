@@ -9,36 +9,28 @@ import java.util.Stack;
  */
 public class ValidParentheses {
 
-    private Stack<String> stack;
+    Stack<Character> stack = new Stack<Character>();
 
     public boolean isValid(String s) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        stack = new Stack<String>();
         for (char c : s.toCharArray()) {
             if (c == '(' || c == '{' || c == '[') {
-                stack.push(c + "");
-            } else {
-                if (stack.isEmpty()) {
-                    return false;
-                } else {
-                    String top = stack.pop();
-                    if (!isMatch(top.charAt(0), c)) {
-                        return false;
-                    }
-                }
+                stack.push(c);
+                continue;
             }
-        }
-        return stack.isEmpty();
-    }
 
-    private boolean isMatch(char a, char b) {
-        if (a == '(' && b == ')' ||
-                a == '{' && b == '}' ||
-                a == '[' && b == ']') {
-            return true;
-        } else {
+            if (stack.isEmpty()) {
+                return false;
+            }
+
+            char topC = stack.pop();
+            if (c == ')' && topC == '(' ||
+                    c == ']' && topC == '[' ||
+                    c == '}' && topC =='{') {
+                continue;
+            }
+
             return false;
         }
+        return stack.isEmpty();
     }
 }
