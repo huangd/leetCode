@@ -7,28 +7,21 @@ package leetcode;
  */
 public class LongestCommonPrefix {
 
-    //Passed the small test. Time complexity is O(N). We could use the binary search to bring it down to O(logN)
     public String longestCommonPrefix(String[] strs) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-
-        String commonPrefix = "";
+        String prefix = "";
         if (strs.length == 0) {
-            return commonPrefix;
-        } else if (strs[0].length() == 0) {
-            return commonPrefix;
-        } else {
-
-            for (int i = 0; i < strs[0].length(); ++i) {
-                char thisChar = strs[0].charAt(i);
-                for (String aString : strs) {
-                    if (i > aString.length() - 1 || aString.charAt(i) != thisChar) {
-                        return commonPrefix;
-                    }
+            return prefix;
+        }
+        for (int i = 0; ; i ++) {
+            char letter = ' ';
+            for (String str : strs) {
+                if (str.length() > i && (str.charAt(i) == letter || letter == ' ')) {
+                    letter = str.charAt(i);
+                } else {
+                    return prefix;
                 }
-                commonPrefix += thisChar;
             }
-            return commonPrefix;
+            prefix += letter;
         }
     }
 }
