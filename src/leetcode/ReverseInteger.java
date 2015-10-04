@@ -6,29 +6,15 @@ package leetcode;
  * Time: 8:19 PM
  */
 public class ReverseInteger {
-    //1000 <=> 1
-    //could be integer overflow
     public int reverse(int x) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        boolean isNegative = x >= 0 ? false : true;
-        x = Math.abs(x);
-        StringBuilder reverseInt = new StringBuilder();
-        while (x > 0) {
-            int mod = x % 10;
-            x /= 10;
-            if (mod == 0) {
-                if (reverseInt.length() > 0) {
-                    reverseInt.append(mod);
-                }
-            } else {
-                reverseInt.append(mod);
-            }
+        boolean isPositive = x >= 0 ? true : false;
+        String rXs = new StringBuilder(Math.abs(x) + "").reverse().toString();
+        rXs = rXs.replace('0', ' ').trim().replace(' ', '0');
+        rXs = rXs.equals("") ? "0" : rXs;
+        try {
+            return isPositive ? new Integer(rXs) : new Integer("-" + rXs);
+        } catch (Exception e) {
+            return 0;
         }
-        if (reverseInt.length() == 0) {
-            reverseInt.append(0);
-        }
-        int result = Integer.parseInt(reverseInt.toString());
-        return isNegative == true ? result * (-1) : result;
     }
 }
