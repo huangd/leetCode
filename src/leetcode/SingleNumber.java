@@ -20,4 +20,11 @@ public class SingleNumber {
         }
         return single;
     }
+
+    /**
+     * Use XOR (exclusive or) bitwise operator
+     */
+    public int singleNumberXOR(int[] nums) {
+        return Arrays.stream(nums).reduce(0, (x, y) -> x ^ y);
+    }
 }
