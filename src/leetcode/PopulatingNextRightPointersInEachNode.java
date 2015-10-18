@@ -8,15 +8,9 @@ package leetcode;
 public class PopulatingNextRightPointersInEachNode {
 
     public void connect(TreeLinkNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        if (root != null) {
-            if (root.left != null) {
-                root.left.next = root.right;
-            }
-            if (root.right != null) {
-                root.right.next = root.next == null ? null : root.next.left;
-            }
+        if (root != null && root.left != null) {
+            root.left.next = root.right;
+            root.right.next = root.next == null ? null : root.next.left;
             connect(root.left);
             connect(root.right);
         }
