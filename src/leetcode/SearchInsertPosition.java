@@ -16,7 +16,7 @@ public class SearchInsertPosition {
         if (start >= end) {
             return start;
         } else {
-            int mid = (end - start) / 2 + start;
+            int mid = (end + start) / 2;
             if (A[mid] == target) {
                 return mid;
             } else if (target > A[mid]) {
