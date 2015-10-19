@@ -10,34 +10,15 @@ import java.util.Map;
  */
 public class UniquePaths {
 
-    private Map<String, Integer> cache;
+    Map<String, Integer> pathCountCache = new HashMap<>();
 
     public int uniquePaths(int m, int n) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        cache = new HashMap<String, Integer>();
-        return totalPaths(m - 1, n - 1);
-    }
-
-    private int totalPaths(int x, int y) {
-        Integer number = cache.get(x + "," + y);
-        if (number != null) {
-            return number;
-        }
-        if (x == 0 && y == 0) {
+        if (m == 1 || n == 1) {
             return 1;
-        } else {
-            int down = 0;
-            if (y != 0) {
-                down = totalPaths(x, y - 1);
-            }
-            int left = 0;
-            if (x != 0) {
-                left = totalPaths(x - 1, y);
-            }
-            number = down + left;
-            cache.put(x + "," + y, number);
-            return number;
         }
+        String cacheKey = m + "," + n;
+        int pathCount = pathCountCache.get(cacheKey) == null ? uniquePaths(m - 1, n) + uniquePaths(m, n - 1) : pathCountCache.get(cacheKey);
+        pathCountCache.put(cacheKey, pathCount);
+        return pathCount;
     }
 }
