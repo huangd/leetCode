@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * User: huangd
  * Date: 12/26/12
@@ -7,47 +10,23 @@ package leetcode;
  */
 public class MinimumPathSum {
 
-    private int[][] cache;
-    private int[][] grid;
+    Map<String, Integer> cache = new HashMap<>();
 
     public int minPathSum(int[][] grid) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-        int row = grid.length;
-        int column = grid[0].length;
-        this.grid = grid;
-        cache = new int[row][column];
-        init();
-        return minSum(row - 1, column - 1);
+        return minPathSum(grid.length - 1, grid[0].length - 1, grid);
     }
 
-    private int minSum(int x, int y) {
-        if (cache[x][y] == -1) {
-            int val = grid[x][y];
-            int left = -1;
-            if (x - 1 >= 0) {
-                left = minSum(x - 1, y);
-            }
-            int down = -1;
-            if (y - 1 >= 0) {
-                down = minSum(x, y - 1);
-            }
-            if (left != -1 && down != -1) {
-                cache[x][y] = val + Math.min(left, down);
-            } else if (left == -1 && down == -1) {
-                cache[x][y] = val;
-            } else {
-                cache[x][y] = val + Math.max(left, down);
-            }
-        }
-        return cache[x][y];
-    }
+    int minPathSum(int m, int n, int[][] grid) {
+        String cacheKey = m + "," + n;
+        if (cache.get(cacheKey) != null) return cache.get(cacheKey);
 
-    private void init() {
-        for (int i = 0; i < cache.length; ++i) {
-            for (int j = 0; j < cache[0].length; ++j) {
-                cache[i][j] = -1;
-            }
-        }
+        if (m == 0 && n == 0) return grid[m][n];
+
+        int down = Integer.MAX_VALUE;
+        int right = Integer.MAX_VALUE;
+        if (m > 0) down = minPathSum(m - 1, n, grid);
+        if (n > 0) right = minPathSum(m, n - 1, grid);
+        cache.put(cacheKey, grid[m][n] + Math.min(down, right));
+        return cache.get(cacheKey);
     }
 }
