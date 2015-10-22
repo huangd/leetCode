@@ -9,14 +9,14 @@ import java.util.ArrayList;
  */
 public class Combinations {
 
-    private ArrayList<ArrayList<Integer>> resultList;
+    private ArrayList<List<Integer>> resultList;
     private int n;
     private int k;
 
-    public ArrayList<ArrayList<Integer>> combine(int n, int k) {
+    public List<List<Integer>> combine(int n, int k) {
         // Start typing your Java solution below
         // DO NOT write main() function
-        resultList = new ArrayList<ArrayList<Integer>>();
+        resultList = new ArrayList<List<Integer>>();
         this.k = k;
         this.n = n;
         backtrack(new ArrayList<Integer>(), 0);
