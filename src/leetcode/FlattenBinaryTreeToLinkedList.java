@@ -22,15 +22,9 @@ public class FlattenBinaryTreeToLinkedList {
         stack.push(treeNode);
         while (!stack.isEmpty()) {
             TreeNode current = stack.pop();
-            if (current.right != null) {
-                stack.push(current.right);
-            }
-            if (current.left != null) {
-                stack.push(current.left);
-            }
-            if (pre != null) {
-                pre.right = current;
-            }
+            if (current.right != null) stack.push(current.right);
+            if (current.left != null) stack.push(current.left);
+            if (pre != null) pre.right = current;
             current.left = null;
             current.right = null;
             pre = current;
