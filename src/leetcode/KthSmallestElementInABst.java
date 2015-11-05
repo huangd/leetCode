@@ -1,3 +1,5 @@
+package leetcode;
+
 public class KthSmallestElementInABst {
   public int kthSmallest(TreeNode root, int k) {
     int countNodeLeft = countNode(root.left);

@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Iterator;
+
 class PeekingIterator implements Iterator<Integer> {
 
     Iterator<Integer> theIterator;

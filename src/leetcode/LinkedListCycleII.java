@@ -7,5 +7,6 @@ public class LinkedListCycleII {
          * Determine the size of the loop
          * Start again to determine the start of the loop
          */
+        return null;
     }
 }

@@ -1,8 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 /**
  * User: huangd
@@ -23,8 +21,8 @@ public class SumRootToLeafNumbers {
         if (node.right != null) dfs(node.right, nodePath);
         if (node.left == null && node.right == null) {
             sum += nodePath.stream()
-                .mapToInt(thisNode -> thisNode.val)
-                .reduce(0, (sum, val) -> sum * 10 + val);
+                    .mapToInt(thisNode -> thisNode.val)
+                    .reduce(0, (sum, val) -> sum * 10 + val);
         }
         nodePath.removeLast();
     }

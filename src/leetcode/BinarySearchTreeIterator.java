@@ -1,9 +1,11 @@
 package leetcode;
 
-public class BSTIterator {
+import java.util.Stack;
+
+public class BinarySearchTreeIterator {
 
     Stack<TreeNode> levelNodes = new Stack<>();
-    public BSTIterator(TreeNode root) {
+    public BinarySearchTreeIterator(TreeNode root) {
         TreeNode node = root;
         while (node != null) {
             levelNodes.push(node);

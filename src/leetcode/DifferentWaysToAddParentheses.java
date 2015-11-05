@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.*;
+
 public class DifferentWaysToAddParentheses {
     public List<Integer> diffWaysToCompute(String input) {
         List<Integer> result = new ArrayList<>();
@@ -24,7 +26,7 @@ public class DifferentWaysToAddParentheses {
 }
 
 class Operator {
-    static Set<String> operators = new HashSet<>(Arrays.asList("+", "-", "*"));
+    static Set<Character> operators = new HashSet<>(Arrays.asList('+', '-', '*'));
     static boolean isOperator(char candidate) {
         return operators.contains(candidate);
     }

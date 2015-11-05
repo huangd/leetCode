@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class CombinationSumIII {
     int k;
     int n;
