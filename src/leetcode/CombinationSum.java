@@ -60,4 +60,30 @@ public class CombinationSum {
     private boolean isSolution(int sum) {
         return sum == target;
     }
+
+    List<List<Integer>> results = new ArrayList<>();
+    int[] candidates;
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        this.candidates = candidates;
+        backtrack(new ArrayList<>(), target);
+        return results;
+    }
+
+    void backtrack(ArrayList<Integer> resultCandidate, int remain) {
+        if (remain < 0) return;
+        if (remain == 0) {
+            ArrayList<Integer> newResult = new ArrayList<Integer>(resultCandidate);
+            results.add(newResult);
+            return;
+        }
+        for (int candidate : candidates) {
+            if (resultCandidate.size() > 0 && resultCandidate.get(resultCandidate.size() - 1) > candidate) continue;
+            if (candidate <= remain) {
+                resultCandidate.add(candidate);
+                backtrack(resultCandidate, remain - candidate);
+                resultCandidate.remove(resultCandidate.size() - 1);
+            }
+        }
+    }
 }
