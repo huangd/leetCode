@@ -41,4 +41,14 @@ public class ConstructBinaryTreeInorderPostorder {
         }
         return rootIndex;
     }
+
+    TreeNode buildTree(int[] inorder,  int[] postorder) {
+        if (inorder == null || inorder.length == 0) return null;
+
+        TreeNode node = new TreeNode(postorder[postorder.length - 1]);
+        int inorderIndex = (new ArrayList(Arrays.asList(inorder))).indexOf(postorder[postorder.length - 1]);
+        node.left = buildTree(Arrays.copyOfRange(inorder, 0, inorderIndex), Arrays.copyOfRange(postorder, 0, inorderIndex));
+        node.right = buildTree(Arrays.copyOfRange(inorder, inorderIndex + 1, inorder.length), Arrays.copyOfRange(postorder, inorderIndex, postorder.length - 1));
+        return node;
+    }
 }
